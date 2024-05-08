@@ -39,3 +39,12 @@ and summarization, or various audio processing settings.
         Download the latest release
     </a>
 </div>
+
+
+## Install to Dev
+
+```bash
+    yarn install
+    export OPENAI_API_KEY="your-key-here"
+    yarn start
+```
