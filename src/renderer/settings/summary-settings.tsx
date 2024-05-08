@@ -18,13 +18,19 @@ export const OpenAiSettings: FC = () => {
         OpenAI ChatGPT Settings
       </Heading>
 
+      {/* Add a base URL input field for OpenAI */}
+      <SettingsTextField
+        label="Base URL"
+        {...form.register("llm.providerConfig.openai.chatModel.baseUrl")}
+      />
+
       <SettingsTextField
         label="API Key"
         description="OpenAI API Key"
         {...form.register("llm.providerConfig.openai.chatModel.apiKey")}
       />
 
-      <SettingsSelectField
+      {/* <SettingsSelectField
         label="Chat Model"
         field="llm.providerConfig.openai.chatModel.model"
         form={form}
@@ -46,6 +52,11 @@ export const OpenAiSettings: FC = () => {
           "gpt-3.5-turbo-0613",
           "gpt-3.5-turbo-16k-0613",
         ]}
+      /> */}
+      {/* Just make it a input field */}
+      <SettingsTextField
+        label="Chat Model"
+        {...form.register("llm.providerConfig.openai.chatModel.model")}
       />
 
       <SettingsSelectField
@@ -170,7 +181,7 @@ export const DetailedSummarySettings: FC = () => {
       <Box position="relative">
         <RadioCards.Root
           defaultValue={form.getValues()?.llm.provider}
-          onValueChange={(v) =>
+          onValueChange={(v:any) =>
             form.setValue("llm.provider", v as "ollama" | "openai")
           }
           columns={{ initial: "1", xs: "1", sm: "2", md: "3", lg: "7" }}

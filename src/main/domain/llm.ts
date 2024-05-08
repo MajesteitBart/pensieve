@@ -2,7 +2,7 @@ import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChatOllama } from "@langchain/community/chat_models/ollama";
 import { OllamaEmbeddings } from "@langchain/community/embeddings/ollama";
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Document } from "@langchain/core/documents";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
@@ -60,7 +60,11 @@ const getChatModel = async () => {
       await pullModel(llm.providerConfig.ollama.chatModel.model);
       return new ChatOllama(llm.providerConfig.ollama.chatModel);
     case "openai":
-      return new ChatOllama(llm.providerConfig.openai.chatModel);
+      return new ChatOpenAI({
+        // baseUrl: llm.providerConfig.openai.chatModel?.baseUrl, 
+        model: llm.providerConfig.openai.chatModel?.model,
+        apiKey: process.env.OPENAI_API_KEY ?? "",
+      });
     default:
       throw new Error(`Invalid LLM provider: ${llm.provider}`);
   }
@@ -74,7 +78,12 @@ const getEmbeddings = async () => {
       await pullModel(llm.providerConfig.ollama.embeddings.model);
       return new OllamaEmbeddings(llm.providerConfig.ollama.embeddings);
     case "openai":
-      return new OpenAIEmbeddings(llm.providerConfig.openai.embeddings);
+      return new OpenAIEmbeddings({
+        model: llm.providerConfig.openai.embeddings.model,
+        apiKey: process.env.OPENAI_API_KEY ?? "",
+        dimensions: 1536,
+        batchSize: 20,
+      });
     default:
       throw new Error(`Invalid LLM provider: ${llm.provider}`);
   }

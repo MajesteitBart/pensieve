@@ -92,6 +92,7 @@ export const defaultSettings = {
       },
       openai: {
         chatModel: {
+          baseUrl: "https://api.openai.com/v1/chat/completions",
           apiKey: "YOUR_API_KEY",
           model: "gpt-3.5-turbo",
         },
